@@ -26,10 +26,13 @@ function Login() {
   const forgotPassword = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.put("http://localhost:3000/user/update", {
-        username: userSignUp.username,
-        password: userSignUp.password,
-      });
+      const response = await axios.put(
+        "http://localhost:3000/user/forgot-password",
+        {
+          email: userSignUp.username,
+          password: userSignUp.password,
+        }
+      );
       setData(response.data);
     } catch (error) {
       console.log(error);
@@ -40,8 +43,7 @@ function Login() {
     e.preventDefault();
     try {
       const response = await axios.delete("http://localhost:3000/user/delete", {
-        username: userSignUp.username,
-        password: userSignUp.password,
+        data: { email: userSignUp.username },
       });
       setData(response.data);
     } catch (error) {

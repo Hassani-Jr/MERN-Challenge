@@ -48,17 +48,24 @@ router.put("/forgot-password", async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
     mongoose.connect(process.env.DB_URL);
-    const user = await User.findOne({ email: email, password: password });
+    const user = await User.findOne({ email: email });
     user.password = password;
     user.save();
-    res.status(200).send("Your password has been updated!", user);
+    res.status(201).send("Your password has been updated!");
   } catch (error) {
     console.error(error);
   }
 });
 
-router.delete("/delete", (req, res) => {
-  res.send("User deleted!");
+router.delete("/delete", async (req, res) => {
+  try {
+    const email = req.body.email;
+    mongoose.connect(process.env.DB_URL);
+    await User.deleteOne({ email: email });
+    res.status(200).send("User deleted!");
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 module.exports = router;
